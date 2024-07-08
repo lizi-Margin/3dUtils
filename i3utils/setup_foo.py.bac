@@ -1,0 +1,41 @@
+from distutils.core import setup
+from distutils.extension import Extension
+from Cython.Build import cythonize
+
+# # 获取Python头文件和库文件的目录
+# python_include_dir = ['C:\\Users\\33149\\scoop\\apps\\miniconda3\\24.4.0-0\\include']
+#                     #   'C:\\Users\\33149\\scoop\\apps\\miniconda3\\24.4.0-0\\Library\\include']
+
+# python_lib_dir = ['C:\\Users\\33149\\scoop\\apps\\miniconda3\\24.4.0-0\\envs\\HDB01\\libs']
+#                 #   'C:\\Users\\33149\\scoop\\apps\\miniconda3\\24.4.0-0\\envs\\HDB01\\Library\\lib']
+# python_lib_name = ['python312' ,'_tkinter' ,'python3']
+# extensions = [
+#     Extension(
+#         "foo",
+#         ["foo.pyx"],
+#         include_dirs=python_include_dir,  # 包含Python头文件的目录
+#         library_dirs=python_lib_dir,  # 包含Python库文件的目录
+#         libraries=python_lib_name,  # Python库名称
+#         extra_compile_args=["/Zi"],  # 开启调试信息
+#         extra_link_args=["/VERBOSE"]  # 链接器详细信息
+#     )
+# ]
+
+# setup(
+#     ext_modules=cythonize(extensions),
+# )
+
+
+extentions =   [Extension(
+        "foo",
+        ["foo.pyx"],
+        extra_compile_args=["/Zi"],  # 开启调试信息
+        extra_link_args=["/VERBOSE"]  # 链接器详细信息
+    )
+]
+setup(
+    ext_modules=cythonize(extentions
+                          ,annotate = True
+                          ,compiler_directives={'language_level': "3"},
+                          ),
+)
