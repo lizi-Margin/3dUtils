@@ -1,33 +1,34 @@
 ﻿#pragma once
 
-#include <cmath>
-#include <stdexcept>
-#include <vector>
 #include "external/Eigen/Dense"
+#include <array>
+#include <string>
+#include <stdexcept>
 #include "Def.h"
-
-typedef double float64_t;
 
 namespace c3utils {
     class Vector3 {
-    public:
+    protected:
         ::Eigen::Vector3d vec;
+         explicit Vector3(const Eigen::Vector3d& vec) noexcept : vec(vec) {}
 
+    public:
         Vector3(float64_t x, float64_t y, float64_t z) noexcept
             : vec(x, y, z) {}
 
-        explicit Vector3(const std::vector<float64_t>& list3) {
-            if (list3.size() != 3) {
-                throw std::invalid_argument("Vector3 must be initialized with a list of 3 elements.");
-            }
-            vec = Eigen::Vector3d(list3[0], list3[1], list3[2]);
+        explicit Vector3(const std::array<float64_t,3>& arr3) noexcept
+        {
+            vec = Eigen::Vector3d(arr3[0], arr3[1], arr3[2]);
         }
-
 
         // explicit 
         Vector3(const Vector3& copy_target) noexcept
             :vec(copy_target.vec){}
 
+        Vector3& rotate_xyz_fix(std::array<float64_t, 3>& rotate_ang_arr_xyz) noexcept 
+        {
+            return rotate_xyz_fix(rotate_ang_arr_xyz[0],rotate_ang_arr_xyz[1],rotate_ang_arr_xyz[2] );
+        }
         Vector3& rotate_xyz_fix(float64_t ax, float64_t ay, float64_t az) noexcept
         {
             Eigen::Matrix3d mx, my, mz;
@@ -86,6 +87,20 @@ namespace c3utils {
             mz = Eigen::AngleAxisd(-az, Eigen::Vector3d::UnitZ()).toRotationMatrix();
             vec = mx * my * mz * vec;
             return *this;
+        }
+        
+
+        std::array<float64_t, 3> get_rotate_angle_fix()const noexcept 
+        {
+            float64_t vx = this->vec[0];
+            float64_t vy = this->vec[1];
+            float64_t vz = this->vec[2];
+
+            float64_t alpha = std::atan2(vy, vx);
+            float64_t beta = std::atan2(-vz, std::sqrt(vx*vx + vy*vy));
+            float64_t gamma = 0;
+
+			return { gamma, beta, alpha };
         }
 
 
@@ -176,14 +191,44 @@ namespace c3utils {
             return std::sqrt(mo);
         }
 
-        std::vector<float64_t> get_list() const noexcept
+        ::std::array<float64_t,3> get_list() const noexcept
         {
-            return ::std::vector<float64_t>{this->vec(0), this->vec(1),this-> vec(2) };
+            return ::std::array<float64_t,3>{this->vec(0), this->vec(1),this-> vec(2) };
         }
+
+		float64_t& operator[](size_t index) {
+			if (index == 0) return this->vec(0);
+			if (index == 1) return this->vec(1);
+			if (index == 2) return this->vec(2);
+			throw std::out_of_range("Index out of range");
+		}
+
+		const float64_t& operator[](size_t index) const {
+			if (index == 0) return this->vec(0);
+			if (index == 1) return this->vec(1);
+			if (index == 2) return this->vec(2);
+			throw std::out_of_range("Index out of range");
+		}
+
+
+		Vector3 operator+(const Vector3& other) const {
+			return Vector3(vec + other.vec);
+		}
+
+		Vector3 operator-(const Vector3& other) const {
+			return Vector3(vec - other.vec);
+		}
+
+		inline std::string get_string() const throw() {
+			return LEFT_BRACKETS + std::to_string(this->vec[0]) + ", " + std::to_string(this->vec[1]) + 
+				", " + std::to_string(this->vec[2]) + RIGHT_BRACKETS;
+		}
+
     };
 
-	inline std::ostream& operator<<(std::ostream& os, const Vector3& v) noexcept {
-		os << LEFT_BRACKETS << v.vec[0] << ", " << v.vec[1] << ", " << v.vec[2] << RIGHT_BRACKETS;
+	inline std::ostream& operator<<(std::ostream& os, const Vector3& v) noexcept 
+    {
+		os << v.get_string();
 		return os;
 	}
 

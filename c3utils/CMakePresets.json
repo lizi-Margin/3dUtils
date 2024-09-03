@@ -27,7 +27,8 @@
             },
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug"
-            }
+            }//,
+            // "toolset": "v120"
         },
         {
             "name": "x64-release",
