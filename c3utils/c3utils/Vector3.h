@@ -21,7 +21,6 @@ namespace c3utils {
             vec = Eigen::Vector3d(arr3[0], arr3[1], arr3[2]);
         }
 
-        // explicit 
         Vector3(const Vector3& copy_target) noexcept
             :vec(copy_target.vec){}
 
@@ -29,6 +28,7 @@ namespace c3utils {
         {
             return rotate_xyz_fix(rotate_ang_arr_xyz[0],rotate_ang_arr_xyz[1],rotate_ang_arr_xyz[2] );
         }
+
         Vector3& rotate_xyz_fix(float64_t ax, float64_t ay, float64_t az) noexcept
         {
             Eigen::Matrix3d mx, my, mz;
@@ -38,6 +38,7 @@ namespace c3utils {
             vec = mz * my * mx * vec;
             return *this;
         }
+
         Vector3& rev_rotate_xyz_fix(float64_t ax, float64_t ay, float64_t az) noexcept
         {
             Eigen::Matrix3d mx, my, mz;
@@ -196,6 +197,12 @@ namespace c3utils {
             return ::std::array<float64_t,3>{this->vec(0), this->vec(1),this-> vec(2) };
         }
 
+        inline std::string get_string() const throw() {
+            return LEFT_BRACKETS + std::to_string(this->vec[0]) + ", " + std::to_string(this->vec[1]) +
+                ", " + std::to_string(this->vec[2]) + RIGHT_BRACKETS;
+        }
+
+
 		float64_t& operator[](size_t index) {
 			if (index == 0) return this->vec(0);
 			if (index == 1) return this->vec(1);
@@ -210,7 +217,6 @@ namespace c3utils {
 			throw std::out_of_range("Index out of range");
 		}
 
-
 		Vector3 operator+(const Vector3& other) const {
 			return Vector3(vec + other.vec);
 		}
@@ -219,10 +225,12 @@ namespace c3utils {
 			return Vector3(vec - other.vec);
 		}
 
-		inline std::string get_string() const throw() {
-			return LEFT_BRACKETS + std::to_string(this->vec[0]) + ", " + std::to_string(this->vec[1]) + 
-				", " + std::to_string(this->vec[2]) + RIGHT_BRACKETS;
-		}
+        bool operator==(const Vector3& other) const {
+            if (vec == other.vec) return true;
+            
+            const float64_t abs_precision = 1e-9;
+            return vec.isApprox(other.vec, abs_precision);
+        }
 
     };
 

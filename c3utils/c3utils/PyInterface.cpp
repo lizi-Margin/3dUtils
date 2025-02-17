@@ -23,13 +23,22 @@ PYBIND11_MODULE(py_c3utils, m) {
 		.def("get_dot", &c3utils::Vector2::get_dot)
 		.def("get_module", &c3utils::Vector2::get_module, py::arg("non_zero") = false)
 		.def("get_angle", &c3utils::Vector2::get_angle)
+		.def("__str__",
+			[](const c3utils::Vector2& v) {
+				std::stringstream ss;
+				ss << "Vector3@c3utils(" << v << ")";
+				return ss.str();
+			}
+		)
 		.def("__repr__",
 			[](const c3utils::Vector2& v) {
 				std::stringstream ss;
 				ss << v;
 				return ss.str();
-			});
+			}
+		);
 
+	// Vector3 binding
 	py::class_<c3utils::Vector3>(m, "Vector3")
 		.def(py::init<float64_t, float64_t, float64_t>())
 		.def(py::init<const std::array<float64_t,3>&>())
@@ -48,13 +57,60 @@ PYBIND11_MODULE(py_c3utils, m) {
 		.def("add", &c3utils::Vector3::add, py::return_value_policy::reference)
 		.def("get_module", &c3utils::Vector3::get_module, py::arg("non_zero") = false)
 		.def("get_list", &c3utils::Vector3::get_list)
+		.def("__getitem__", 
+			[](const c3utils::Vector3& v, size_t index) {
+				if (index > 2) {
+					throw py::index_error("Vector3: Index out of range.");
+				}
+				return v[index];
+			}
+		)
+		.def("__setitem__", 
+			[](c3utils::Vector3& v, size_t index, float64_t value) {
+				if (index > 2) {
+					throw py::index_error("Vector3: Index out of range.");
+				}
+				v[index] = value;
+			}
+		)
+		.def("__add__", 
+			[](const c3utils::Vector3& a, const c3utils::Vector3& b) {
+				return a + b;
+			}
+		)
+		.def("__sub__", 
+			[](const c3utils::Vector3& a, const c3utils::Vector3& b) {
+				return a - b;
+			}
+		)
+		.def("__eq__", 
+			[](const c3utils::Vector3& a, const c3utils::Vector3& b) {
+				return a == b;
+			}
+		)
+		.def("__len__",
+			[](const c3utils::Vector3&) {
+				return 3;
+			}
+		)
+		.def("__str__",
+			[](const c3utils::Vector3& v) {
+				return v.get_string();
+			}
+		)
 		.def("__repr__",
 			[](const c3utils::Vector3& v) {
-				std::stringstream ss;
-				ss << v;
-				return ss.str();
+				return "Vector3@c3utils(" + v.get_string() + ")";
 			}
 		);
+		//.def("__iter__", 
+		//	[](const c3utils::Vector3& v) {
+		//		return py::make_iterator(v.vec.begin(), v.vec.end());
+		//	}, 
+		//	py::keep_alive<0, 1>()
+		//);
+
+	// Functions binding
 	m.def("norm", &c3utils::norm, py::arg("x"), py::arg("lower_side") = -1.0, py::arg("upper_side") = 1.0);
 	m.def("meters_to_feet", &c3utils::meters_to_feet, py::arg("meters"));
 	m.def("feet_to_meters", &c3utils::feet_to_meters, py::arg("feet"));
