@@ -81,9 +81,16 @@ PYBIND11_MODULE(py_c3utils, m) {
 				return a - b;
 			}
 		)
-		.def("__eq__", 
-			[](const c3u::Vector3& a, const c3u::Vector3& b) {
-				return a == b;
+		.def("__eq__",
+			[](const c3utils::Vector3& a, const py::object& b) {
+				if (b.is_none()) return false;
+
+				try {
+					const c3utils::Vector3& other = b.cast<const c3utils::Vector3&>();
+					return a == other;
+				} catch (const py::cast_error&) {
+					return false;
+				}
 			}
 		)
 		.def("__len__",
