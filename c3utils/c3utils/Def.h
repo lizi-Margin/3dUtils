@@ -22,3 +22,5 @@ namespace c3utils {
 
 	typedef double_t float64_t;
 }
+
+#define FOR_PYTHON

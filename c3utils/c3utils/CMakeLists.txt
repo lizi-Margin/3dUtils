@@ -14,17 +14,24 @@ add_subdirectory(external/pybind11)
 add_executable (test "test.cpp"   "Vector2.h" "Vector3.h" "Funcs.h" "c3utils.h" "Def.h")
 
 
-# set(Python3_EXECUTABLE "C:/Users/33149/scoop/apps/miniconda3/24.4.0-0/envs/HDB01/python.exe")
-# set(Python3_INCLUDE_DIR "C:/Users/33149/scoop/apps/miniconda3/24.4.0-0/envs/HDB01/include")
-# set(Python3_LIBRARY "C:/Users/33149/scoop/apps/miniconda3/24.4.0-0/envs/HDB01/libs/python37.lib")
-find_package(Python3 REQUIRED   COMPONENTS Interpreter Development)
 
-pybind11_add_module(py_c3utils PyInterface.cpp)
-target_include_directories(py_c3utils PRIVATE ${Python3_INCLUDE_DIRS})
-target_link_libraries(py_c3utils PRIVATE ${Python3_LIBRARIES})
+function(setup_pybind_proj pybind_proj_name conda_env_path conda_env_python_version)
+    set(Python3_EXECUTABLE "${conda_env_path}/python.exe")
+	set(Python3_INCLUDE_DIR "${conda_env_path}/include")
+	set(Python3_LIBRARY "${conda_env_path}/libs/python${conda_env_python_version}.lib")
+	find_package(Python3 REQUIRED   COMPONENTS Interpreter Development)
 
-set_target_properties(py_c3utils PROPERTIES
-    PREFIX ""  
-    SUFFIX ".pyd"      
-    LINKER_LANGUAGE CXX  
-)
+	set(pybind_proj_name_ "${pybind_proj_name}.cp${conda_env_python_version}-win_amd64")
+	pybind11_add_module(${pybind_proj_name_} PyInterface.cpp)
+	target_include_directories(${pybind_proj_name_} PRIVATE ${Python3_INCLUDE_DIRS})
+	target_link_libraries(${pybind_proj_name_} PRIVATE ${Python3_LIBRARIES})
+	
+	set_target_properties(${pybind_proj_name_} PROPERTIES
+		PREFIX ""  
+		SUFFIX ".pyd"      
+		LINKER_LANGUAGE CXX  
+	)
+endfunction()
+
+setup_pybind_proj("py_c3utils" "G:/.conda/envs/hmp" "37")
+setup_pybind_proj("py_c3utils" "C:/Users/hulc/scoop/apps/miniconda3/current" "312")

@@ -24,10 +24,12 @@ namespace c3utils {
         Vector3(const Vector3& copy_target) noexcept
             :vec(copy_target.vec){}
 
+# ifndef FOR_PYTHON
         Vector3& rotate_xyz_fix(std::array<float64_t, 3>& rotate_ang_arr_xyz) noexcept 
         {
             return rotate_xyz_fix(rotate_ang_arr_xyz[0],rotate_ang_arr_xyz[1],rotate_ang_arr_xyz[2] );
         }
+# endif
 
         Vector3& rotate_xyz_fix(float64_t ax, float64_t ay, float64_t az) noexcept
         {
