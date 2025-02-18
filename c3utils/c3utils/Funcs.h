@@ -5,9 +5,9 @@
 #include <cmath>
 #include <array>
 
-#include "Vector3.h"
-#include "Vector2.h"
-#include "Def.h"
+#include "vector.h"
+#include "def.h"
+#include "io.h"
 
 namespace c3utils {
 	
@@ -16,17 +16,17 @@ namespace c3utils {
 		Basic utilities.
 
 	*/
-	constexpr inline float64_t nm_to_meter(float64_t nm) {
+	constexpr inline float64_t nm_to_meter(float64_t nm) noexcept {
 		return nm * 1852.0;
 	}
-	constexpr inline float64_t meter_to_nm(float64_t nm) {
+	constexpr inline float64_t meter_to_nm(float64_t nm) noexcept {
 		return nm / 1852.0;
 	}
 
-	constexpr inline float64_t mps_to_kn(float64_t mps)noexcept{
+	constexpr inline float64_t mps_to_kn(float64_t mps) noexcept {
 		return mps * 1.9438452;
 	}
-	constexpr inline float64_t kn_to_mps(float64_t kn)noexcept{
+	constexpr inline float64_t kn_to_mps(float64_t kn) noexcept {
 		//return kn / 1.9438452;
 		return kn *  0.5144442;
 	}
@@ -63,7 +63,10 @@ namespace c3utils {
         return mach * local_ss;
 	}
 
-	inline float64_t get_mps(float64_t mach,float64_t alt) { return mach_to_mps(mach, estimate_temperature_C(alt)); }
+	inline float64_t get_mps(float64_t mach,float64_t alt) noexcept
+	{ 
+		return mach_to_mps(mach, estimate_temperature_C(alt)); 
+	}
 
     constexpr inline float64_t meters_to_feet(float64_t meters) noexcept 
 	{
@@ -99,7 +102,7 @@ namespace c3utils {
     inline float64_t 
 	norm(float64_t x, float64_t lower_side = -1.0, float64_t upper_side = 1.0) noexcept 
 	{
-        if (lower_side > upper_side) PRINT_WARNING("'lower_side' should be smaller than 'upper_side'!");
+        if (lower_side > upper_side) lprintw("norm", "'lower_side' should be smaller than 'upper_side'!");
         if (x > upper_side) x = upper_side;
         if (x < lower_side) x = lower_side;
         return x;
@@ -209,7 +212,7 @@ namespace c3utils {
 	{
         // TODO: customized 'mid'
 		if (neu_from[0] != 0. || neu_from[1] != 0. || neu_from[2] != 10000.) {
-		    throw std::runtime_error("Not implemented for mid other than [0, 0, 10000.]");
+		    throw std::runtime_error(lprint_("NEU_to_NED", "Not implemented for mid other than [0, 0, 10000.]"));
 		}
 
         std::array<float64_t,3> ned(neu_to);

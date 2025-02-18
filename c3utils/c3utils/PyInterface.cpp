@@ -58,7 +58,7 @@ PYBIND11_MODULE(py_c3utils, m) {
 		.def("__getitem__", 
 			[](const c3u::Vector3& v, size_t index) {
 				if (index > 2) {
-					throw py::index_error("Vector3: Index out of range.");
+					throw py::index_error(c3u::lprint_(&v, "Index out of range"));
 				}
 				return v[index];
 			}
@@ -66,7 +66,7 @@ PYBIND11_MODULE(py_c3utils, m) {
 		.def("__setitem__", 
 			[](c3u::Vector3& v, size_t index, c3u::float64_t value) {
 				if (index > 2) {
-					throw py::index_error("Vector3: Index out of range.");
+					throw py::index_error(c3u::lprint_(&v, "Index out of range"));
 				}
 				v[index] = value;
 			}
@@ -100,12 +100,12 @@ PYBIND11_MODULE(py_c3utils, m) {
 		)
 		.def("__str__",
 			[](const c3u::Vector3& v) {
-				return v.get_string();
+				return v.str();
 			}
 		)
 		.def("__repr__",
 			[](const c3u::Vector3& v) {
-				return "Vector3@c3utils(" + v.get_string() + ")";
+				return "Vector3@c3utils(" + v.repr() + ")";
 			}
 		);
 		//.def("__iter__", 

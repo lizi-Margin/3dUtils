@@ -12,15 +12,11 @@
 #  define DLL_IMPORT __attribute__((visibility("default")))
 #endif
 
-#define PRINT_WARNING(msg) { std::cerr << "Warning: " << msg << std::endl; }
+
 
 namespace c3utils {
-	constexpr auto LEFT_BRACKETS = "[ ";
-	constexpr auto RIGHT_BRACKETS = " ]";
-
 	constexpr auto pi = EIGEN_PI;
-
-	typedef double_t float64_t;
+	typedef double float64_t;
 }
 
-#define FOR_PYTHON
+//#define FOR_PYTHON

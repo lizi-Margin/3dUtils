@@ -11,7 +11,7 @@
 include_directories(external/Eigen)
 add_subdirectory(external/pybind11)
 
-add_executable (test "test.cpp"   "Vector2.h" "Vector3.h" "Funcs.h" "c3utils.h" "Def.h")
+add_executable (test "test.cpp"    "vector.h" "funcs.h" "c3utils.h" "def.h" "io.h")
 
 
 
@@ -33,5 +33,5 @@ function(setup_pybind_proj pybind_proj_name conda_env_path conda_env_python_vers
 	)
 endfunction()
 
-setup_pybind_proj("py_c3utils" "G:/.conda/envs/hmp" "37")
-setup_pybind_proj("py_c3utils" "C:/Users/hulc/scoop/apps/miniconda3/current" "312")
+# setup_pybind_proj("py_c3utils" "G:/.conda/envs/hmp" "37")
+# setup_pybind_proj("py_c3utils" "C:/Users/hulc/scoop/apps/miniconda3/current" "312")

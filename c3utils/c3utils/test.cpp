@@ -1,6 +1,9 @@
 ﻿#include <iostream>
 #include <cmath>
 #include <stdlib.h>
+#include <random>
+#include <thread>
+#include <chrono>
 #include "c3utils.h"
 
 
@@ -140,6 +143,46 @@ int main() {
         std::cout << "\t" << i << " : " << test_set_v[i] << std::endl;
     }
     
+    c3u::Vector3 test_op_a(1, 2, 3);
+    c3u::Vector3 test_op_b(3, 2, 1);
+    std::cout << std::endl << "Now test new operators of the Vector3" << std::endl;
+    std::cout << "test_op_a: " << test_op_a << std::endl;
+    std::cout << "test_op_b: " << test_op_b << std::endl;
+    std::cout << "test_op_a - test_op_b: " << (test_op_a - test_op_b) << std::endl;
+    std::cout << "test_op_a + test_op_b: " << (test_op_a + test_op_b) << std::endl;
+    std::cout << "test_op_a == test_op_b: " << (test_op_a == test_op_b) << std::endl;
+
+    std::cout << std::endl << "Now test new io functions" << std::endl;
+    c3u::Vector3 test_io_vec(1, 2, 3);
+    std::cout << "test_io_vec: " << test_io_vec << std::endl;
+    c3u::print("test_io_vec.repr(): ", test_io_vec.repr());
+    c3u::print("test_io_vec.str(): ", test_io_vec.str());
+    c3u::print("lprintw");
+    c3u::lprintw("WHO", "dododo");
+    c3u::print("lprint");
+    c3u::lprint("WHO", "dododo");
+
+
+
+
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> dis(-100.0, 100.0);
+    std::array<c3u::float64_t, 3> v3_arr{};
+    for (size_t i = 0; i < 20; i += 1)
+    {
+        for (int i = 0; i < 3; ++i) 
+        {
+            v3_arr[i] = dis(gen);
+        }
+        print('\n');
+        print(v3_arr[0], v3_arr[1], v3_arr[2]);
+        print(c3u::Vector3(v3_arr));
+        print(c3u::Vector3(v3_arr).repr());
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+
 
     system("pause");
     return 0;
