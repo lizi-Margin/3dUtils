@@ -116,13 +116,13 @@ PYBIND11_MODULE(py_c3utils, m) {
 		//);
 
 	// Functions binding
-	m.def("norm", &c3u::norm, py::arg("x"), py::arg("lower_side") = -1.0, py::arg("upper_side") = 1.0);
-	m.def("meters_to_feet", &c3u::meters_to_feet, py::arg("meters"));
-	m.def("feet_to_meters", &c3u::feet_to_meters, py::arg("feet"));
-	m.def("no_neg", &c3u::no_neg, py::arg("num"));
-	m.def("make_vector3", &c3u::make_vector3, py::arg("vector2"), py::arg("z") = 0.0);
-	m.def("copy", &c3u::copy, py::arg("vector3"));
-	m.def("abs", &c3u::abs, py::arg("num"));
-	m.def("pwr", &c3u::pwr, py::arg("num"));
+	//m.def("norm", &c3u::norm, py::arg("x"), py::arg("lower_side") = -1.0, py::arg("upper_side") = 1.0);
+	//m.def("meters_to_feet", &c3u::meters_to_feet, py::arg("meters"));
+	//m.def("feet_to_meters", &c3u::feet_to_meters, py::arg("feet"));
+	//m.def("no_neg", &c3u::no_neg, py::arg("num"));
+	//m.def("make_vector3", &c3u::make_vector3, py::arg("vector2"), py::arg("z") = 0.0);
+	//m.def("copy", &c3u::copy, py::arg("vector3"));
+	//m.def("abs", &c3u::abs, py::arg("num"));
+	//m.def("pwr", &c3u::pwr, py::arg("num"));
 
 }

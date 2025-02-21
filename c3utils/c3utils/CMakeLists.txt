@@ -33,5 +33,5 @@ function(setup_pybind_proj pybind_proj_name conda_env_path conda_env_python_vers
 	)
 endfunction()
 
-# setup_pybind_proj("py_c3utils" "G:/.conda/envs/hmp" "37")
-# setup_pybind_proj("py_c3utils" "C:/Users/hulc/scoop/apps/miniconda3/current" "312")
+setup_pybind_proj("py_c3utils" "G:/.conda/envs/hmp" "37")
+setup_pybind_proj("py_c3utils" "C:/Users/hulc/scoop/apps/miniconda3/current" "312")
